@@ -1,0 +1,11 @@
+const express = require('express')
+const router = express.Router()
+const {getUser , updateUser , deleteUser} = require('../../controllers/userController/userController')
+const VerifyJWT = require('../../middleware/authmiddleware/VerifyJWT')
+const {updateRules , runValidation} = require('../../validators/authValidators/authValidator')
+
+router.get('/me' , VerifyJWT , getUser)
+router.put('/me' , VerifyJWT , updateRules , runValidation , updateUser)
+router.delete('/me' , VerifyJWT , deleteUser)
+
+module.exports = router
