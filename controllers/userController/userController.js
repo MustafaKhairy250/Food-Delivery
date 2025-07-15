@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
@@ -13,6 +12,8 @@ exports.getUser = async (req, res) => {
       select: {
         name: true,
         email: true,
+        phone : true ,
+        addresses: true ,
         createdAt: true,
       },
     });
@@ -26,7 +27,7 @@ exports.getUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   const userId = req.user.id;
-  const { name, email, password } = req.body;
+  const { name, email, password, phone } = req.body;
 
   const data = {};
   if (name) {
@@ -39,6 +40,9 @@ exports.updateUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     data.password = hashedPassword;
   }
+  if (phone) {
+    data.phone = phone;
+  }
   try {
     const user = await prisma.user.update({
       where: {
@@ -48,6 +52,7 @@ exports.updateUser = async (req, res) => {
       select: {
         name: true,
         email: true,
+        phone: true,
       }
     });
     res.json(user);
@@ -58,6 +63,27 @@ exports.updateUser = async (req, res) => {
   }
 };
 
+exports.addUserAddress = async(req , res) =>{
+  const userId = req.user.id
+  const {street , city , country} = req.body
+  try {
+    const newAddress = await prisma.address.create({
+      data : {
+        street : street,
+        city : city,
+        country : country,
+        user : {
+          connect : {
+            id : userId
+          }
+        }
+      }
+    })
+    res.json(newAddress)
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+}
 exports.deleteUser = async (req, res) => {
   const userId = req.user.id;
   try {

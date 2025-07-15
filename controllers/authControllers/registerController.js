@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 exports.register = async (req, res) => {
-    const {name, email, password , role } = req.body
+    const {name, email, password, phone , role ,address} = req.body
 
 try {
     const existingUser = await prisma.user.findUnique({
@@ -26,7 +26,18 @@ try {
             name: name,
             email: email,
             password: hashedPassword,
-            role: role
+            phone : phone ,
+            role: role,
+            addresses : {
+                create : {
+                    street : address.street,
+                    city : address.city,
+                    country : address.country
+                }
+            }
+        },
+        include : {
+            addresses : true
         }
     })
 

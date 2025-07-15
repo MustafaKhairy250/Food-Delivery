@@ -25,4 +25,15 @@ const restaurantRole = async (req , res , next) => {
     }
 }
 
-module.exports = {adminRole , restaurantRole}
+const customerRole = async (req , res , next) => {
+    const {role} = req.user
+    if(role === 'CUSTOMER'){
+        next()
+    }
+    else {
+        return res.status(403).json({
+            message : 'Forbidden'
+        })
+    }
+}
+module.exports = {adminRole , restaurantRole , customerRole}

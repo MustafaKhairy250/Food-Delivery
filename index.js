@@ -12,8 +12,10 @@ app.use('/auth' , require('./routes/authRoutes/loginRoute'))
 app.use('/user' , require('./routes/userRoute/userRoute'))
 // restaurant Route
 app.use('/restaurant' , require('./routes/restaurantRoute/restaurantRoute'))
-
+//menu-items Route
 app.use('/menu-items' , require('./routes/menuItemsRoute/menu-items-Route'))
+//order Route
+app.use('/orders' , require('./routes/orderRoutes/orderRoute'))
 
 //! don't forget validators of menu items
 // need to make controller of menu items and routes then to check every end point with all the middlewares 

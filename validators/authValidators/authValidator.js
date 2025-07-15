@@ -4,6 +4,9 @@ const registerRules = [
   body('name').notEmpty().withMessage('Name is required'),
   body('email').isEmail().withMessage('Invalid email'),
   body('password').isLength({ min: 6 }).withMessage('Password must be ≥ 6 chars'),
+  body('phone')
+    .matches(/^01\d{9}$/)
+    .withMessage('phone must be 11 digits and start with "01"'),
 ];
 
 const loginRules = [
@@ -15,6 +18,9 @@ const updateRules = [
     body('name').optional().notEmpty().withMessage('Name cannot be empty'),
     body('email').optional().isEmail().withMessage('Invalid email'),
     body('password').optional().isLength({ min: 6 }).withMessage('Password must be ≥6 chars'),
+    body('phone').optional()
+    .matches(/^01\d{9}$/)
+    .withMessage( 'phone must be 11 digits and start with "01"'),
   ];
 const runValidation = (req, res, next) => {
   const errors = validationResult(req);
