@@ -18,11 +18,20 @@ exports.getAllMenuItems = async (req , res) => {
 }
 
 exports.getOneMenuItem = async (req , res) => {
-    const {id} = req.params
+    const {restId ,id : menuItemId} = req.params
     try {
+        const rest = await prisma.restaurant.findUnique({
+            where : {
+                id : Number(restId)
+            }
+        })
+        if(!rest) return res.status(404).json({
+            message : "Restaurant not found"
+        })
         const item = await prisma.menuItem.findUnique({
             where : {
-                id : Number(id)
+                id : Number(menuItemId),
+                restaurantId : Number(restId)
             }
         })
         if(!item){
@@ -69,43 +78,61 @@ exports.createMenuItem = async (req , res) => {
 }
 
 exports.updateMenuItem = async (req, res) => {
+    const restId = Number(req.params.restId);
     const itemId = Number(req.params.id);
     const { name, description, price } = req.body;
-  
-    const item = await prisma.menuItem.findUnique({ where: { id: itemId } });
-    if (!item) return res.status(404).json({ message: 'MenuItem not found' });
-  
+    
+    try {
+        
     const rest = await prisma.restaurant.findUnique({
-      where: { id: item.restaurantId, ownerId: req.user.id },
-    });
-    if (!rest) return res.status(403).json({ message: 'Forbidden: not owner' });
-  
-    const data = {};
-    if (name !== undefined) data.name = name;
-    if (description !== undefined) data.describtion = description;
-    if (price !== undefined) data.price = Number(price);
-  
-    if (Object.keys(data).length === 0)
-      return res.status(400).json({ message: 'No valid fields provided for update' });
-  
-    const updated = await prisma.menuItem.update({
-      where: { id: itemId },
-      data,
-    });
-    res.json(updated);
+        where: { id: restId, ownerId: req.user.id },
+      });
+      if (!rest) return res.status(403).json({ message: 'Forbidden: not owner' });
+    
+      const item = await prisma.menuItem.findUnique({ where: { id: itemId , restaurantId : restId} });
+      if (!item) return res.status(404).json({ message: 'MenuItem not found' });
+    
+      const data = {};
+      if (name !== undefined) data.name = name;
+      if (description !== undefined) data.describtion = description;
+      if (price !== undefined) data.price = Number(price);
+    
+      if (Object.keys(data).length === 0)
+        return res.status(400).json({ message: 'No valid fields provided for update' });
+    
+      const updated = await prisma.menuItem.update({
+        where: { id: itemId },
+        data,
+      });
+      res.json(updated);
+    } catch (err) {
+        res.status(500).json({
+            message: err.message,
+          });
+        
+    }
   };
 
 
 exports.deleteMenuItem = async (req, res) => {
+    const restId = Number(req.params.restId);
     const itemId = Number(req.params.id);
-    const item = await prisma.menuItem.findUnique({ where: { id: itemId } });
+    try {
+        const rest = await prisma.restaurant.findUnique({
+          where: { id: restId, ownerId: req.user.id },
+        });
+        if (!rest) return res.status(403).json({ message: 'Forbidden: not owner' });
+        
+    const item = await prisma.menuItem.findUnique({ where: { id: itemId , restaurantId : restId} });
     if (!item) return res.status(404).json({ message: 'MenuItem not found' });
   
-    const rest = await prisma.restaurant.findUnique({
-      where: { id: item.restaurantId, ownerId: req.user.id },
-    });
-    if (!rest) return res.status(403).json({ message: 'Forbidden: not owner' });
   
     await prisma.menuItem.delete({ where: { id: itemId } });
     res.json({ message: 'MenuItem deleted' });
+    } catch (err) {
+        res.status(500).json({
+            message: err.message,
+          });
+        
+    }
   };

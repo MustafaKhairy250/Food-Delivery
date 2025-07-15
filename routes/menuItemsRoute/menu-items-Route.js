@@ -11,7 +11,7 @@ router.get('/:restId/:id' ,verifyJWT ,getOneMenuItem) // Get one menu item
 
 router.post('/:restId' , verifyJWT ,restaurantRole, menuItemRules , runValidation , createMenuItem) // Create a new menu item restaurant-owner-only
 
-router.put('/:id' , verifyJWT ,restaurantRole , updateMenuItemRules , runValidation , updateMenuItem) // Update a menu item restaurant-owner-only
-router.delete('/:id' , verifyJWT ,restaurantRole , deleteMenuItem) // Delete a menu item restaurant-owner-only
+router.put('/:restId/:id' , verifyJWT ,restaurantRole , updateMenuItemRules , runValidation , updateMenuItem) // Update a menu item restaurant-owner-only
+router.delete('/:restId/:id' , verifyJWT ,restaurantRole , deleteMenuItem) // Delete a menu item restaurant-owner-only
 
 module.exports = router
