@@ -13,10 +13,9 @@ const adminRole = async (req , res , next) => {
     }
 }
 
-// this function may be not used now
-const checkRole = async (req , res , next) => {
+const restaurantRole = async (req , res , next) => {
     const {role} = req.user
-    if(role === 'ADMIN' || role === 'RESTAURANT'){
+    if(role === 'RESTAURANT'){
         next()
     }
     else {
@@ -26,4 +25,4 @@ const checkRole = async (req , res , next) => {
     }
 }
 
-module.exports = {adminRole , checkRole}
+module.exports = {adminRole , restaurantRole}
