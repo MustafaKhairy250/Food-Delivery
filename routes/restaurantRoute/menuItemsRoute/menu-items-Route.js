@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {getAllMenuItems , getOneMenuItem , createMenuItem, updateMenuItem , deleteMenuItem} = require('../../controllers/menuItemController/menuItemController')
-const verifyJWT = require('../../middleware/authmiddleware/VerifyJWT')
-const {menuItemRules ,updateMenuItemRules ,runValidation} = require('../../validators/generalValidators/menuItemValidator')
-const {restaurantRole} = require('../../middleware/role-based-middleware/checkRole')
+const {getAllMenuItems , getOneMenuItem , createMenuItem, updateMenuItem , deleteMenuItem} = require('../../../controllers/restaurantControllers/menuItemController/menuItemController')
+const verifyJWT = require('../../../middleware/authmiddleware/VerifyJWT')
+const {menuItemRules ,updateMenuItemRules ,runValidation} = require('../../../validators/generalValidators/menuItemValidator')
+const {restaurantRole} = require('../../../middleware/role-based-middleware/checkRole')
 
 
 router.get('/:restId' ,verifyJWT ,getAllMenuItems) // Get all menu items

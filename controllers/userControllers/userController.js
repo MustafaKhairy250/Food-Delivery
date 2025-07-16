@@ -84,6 +84,24 @@ exports.addUserAddress = async(req , res) =>{
     res.status(500).json({ message: "Server error" });
   }
 }
+
+exports.getAllUserAdresses = async (req , res) =>{
+  const userId = req.user.id
+  try {
+    const addresses = await prisma.address.findMany({
+      where : {
+        id : userId
+      }
+    })
+    res.json({
+      addresses
+    })
+  } catch (err) {
+    res.status(500).json({
+      message : err.message
+    })
+  }
+}
 exports.deleteUser = async (req, res) => {
   const userId = req.user.id;
   try {

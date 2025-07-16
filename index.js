@@ -16,19 +16,18 @@ app.use('/restaurant' , require('./routes/restaurantRoute/authRoutes/registerRou
 app.use('/restaurant' , require('./routes/restaurantRoute/authRoutes/loginRoute'))
 // Admin Routes controlling restaurants
 app.use('/restaurants/unreviewed' , require('./routes/adminRoutes/reviewingRoute'))
-// app.use('/restaurants/unreviewed' , require('./routes/adminRoutes/reviewingRoute'))
-// User Route
+// User Route All CRUD Operations
 app.use('/user' , require('./routes/userRoute/userRoute'))
-// restaurant Route
+// restaurant Route All CRUD Operations
 app.use('/restaurant' , require('./routes/restaurantRoute/restaurantRoute'))
-//menu-items Route
-app.use('/menu-items' , require('./routes/menuItemsRoute/menu-items-Route'))
+//menu-items Route All CRUD Operations
+app.use('/menu-items' , require('./routes/restaurantRoute/menuItemsRoute/menu-items-Route'))
 //order Route
-app.use('/orders' , require('./routes/orderRoutes/orderRoute'))
+app.use('/orders' , require('./routes/userRoute/orderRoutes/orderRoute'))
 
+//? delwa2ty 5lsna kol end point fel auth lw7dha w 3mlna controller ll review fadel bokra nzbt kol l files hna w fe postman w nkml b2a sho8l mn mkan ma w2fna 
 //! post man change all end points and tokens 
 //! create order finished and start over it with get all orders and status
 // انقل كل اند بوينت علي حسب الرول بتاع اللي يقدر يوصلها
-//? after all controllers and routes are done don't forget to make phone unique
 //seeder for meals 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
