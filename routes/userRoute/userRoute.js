@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {getUser , updateUser , deleteUser , addUserAddress} = require('../../controllers/userController/userController')
+const {getUser , updateUser , deleteUser , addUserAddress} = require('../../controllers/userControllers/userController')
 const VerifyJWT = require('../../middleware/authmiddleware/VerifyJWT')
 const {updateRules , runValidation} = require('../../validators/authValidators/authValidator')
 

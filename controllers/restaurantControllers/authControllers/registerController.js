@@ -3,8 +3,8 @@ const prisma = new PrismaClient()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-exports.register = async (req, res) => {
-    const {name, email, password, phone , role ,address} = req.body
+exports.restaurantRegister = async (req, res) => {
+    const {name, email, password , phone} = req.body
 
 try {
     const existingUser = await prisma.user.findUnique({
@@ -27,17 +27,7 @@ try {
             email: email,
             password: hashedPassword,
             phone : phone ,
-            role: role,
-            addresses : {
-                create : {
-                    street : address.street,
-                    city : address.city,
-                    country : address.country
-                }
-            }
-        },
-        include : {
-            addresses : true
+            role: "RESTAURANT",
         }
     })
 
@@ -51,8 +41,8 @@ try {
     }
 )
     res.status(201).json({
-        message: 'User created successfully',
-        token: token
+        message: 'Your Account is under review',
+        token
     })
 } catch (err) {
     res.status(500).json({

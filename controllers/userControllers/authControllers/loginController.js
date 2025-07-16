@@ -3,14 +3,14 @@ const {PrismaClient} = require('@prisma/client')
 const prisma = new PrismaClient()
 const jwt = require('jsonwebtoken')
 
-exports.login = async (req, res) => {
+exports.userLogin = async (req, res) => {
     const { email, password } = req.body
 
     try {
         const user = await prisma.user.findUnique({
             where: {
                 email: email
-            }
+            },
         })
 
         if (!user) {
@@ -34,9 +34,13 @@ exports.login = async (req, res) => {
         {
             expiresIn: '1h'
         })
-
+        const userwithoutPassword = {
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+        }
         res.status(200).json({
-            message: 'Login successful',
+            userwithoutPassword,
             token: token
         })
     } catch (err) {

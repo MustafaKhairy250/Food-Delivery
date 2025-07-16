@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {getAllRestaurants , createRestaurant , updateRestaurant , deleteRestaurant ,getOneRestaurant , getRestaurantsByOwnerId} = require('../../controllers/restaurantController/restaurantController')
+const {getAllRestaurants , createRestaurant , updateRestaurant , deleteRestaurant ,getOneRestaurant , getRestaurantsByOwnerId} = require('../../controllers/restaurantControllers/restaurantController')
 const VerifyJWT = require("../../middleware/authmiddleware/VerifyJWT");
 const {adminRole} = require("../../middleware/role-based-middleware/checkRole");
 

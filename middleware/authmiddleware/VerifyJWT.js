@@ -13,6 +13,7 @@ const VerifyJWT = async (req , res , next) => {
                 id : user.id,
                 email : user.email,
                 role : user.role,
+                isreviewd : user.isreviewd
             }
             next()
         })
