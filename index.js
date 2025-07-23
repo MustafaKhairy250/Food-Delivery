@@ -8,26 +8,34 @@ app.use(express.json())
 // Admin Auth Routes
 app.use('/admin' , require('./routes/adminRoutes/authRoutes/registerRoute'))
 app.use('/admin' , require('./routes/adminRoutes/authRoutes/loginRoute'))
-// User Auth Routes
-app.use('/user' , require('./routes/userRoute/authRoutes/registerRoute'))
-app.use('/user' , require('./routes/userRoute/authRoutes/loginRoute'))
+app.use('/admin/restaurants' , require('./routes/adminRoutes/authRoutes/restaurantRoutes')) // controlling restaurants
+app.use('/admin/users' , require('./routes/adminRoutes/authRoutes/usersControlRoute')) // controlling users
+// Admin Routes controlling restaurants Requests
+app.use('/admin/restaurants' , require('./routes/adminRoutes/restaurantRequestsRoutes/reviewCreateRestRoute'))
+app.use('/admin/restaurants' , require('./routes/adminRoutes/restaurantRequestsRoutes/reviewUpdateRestRoute'))
+
+
 // Restaurant Auth Routes
 app.use('/restaurant' , require('./routes/restaurantRoute/authRoutes/registerRoute'))
 app.use('/restaurant' , require('./routes/restaurantRoute/authRoutes/loginRoute'))
-// Admin Routes controlling restaurants
-app.use('/restaurants/unreviewed' , require('./routes/adminRoutes/reviewingRoute'))
-// User Route All CRUD Operations
-app.use('/user' , require('./routes/userRoute/userRoute'))
-// restaurant Route All CRUD Operations
-app.use('/restaurant' , require('./routes/restaurantRoute/restaurantRoute'))
+// Restaurant CRUD Routes
+app.use('/restaurants/deleted' , require('./routes/restaurantRoute/authRoutes/restoreDeletedRoute'))
+app.use('/restaurants' , require('./routes/restaurantRoute/authRoutes/CRUD_restaurantRoute'))
 //menu-items Route All CRUD Operations
-app.use('/menu-items' , require('./routes/restaurantRoute/menuItemsRoute/menu-items-Route'))
-//order Route
-app.use('/orders' , require('./routes/userRoute/orderRoutes/orderRoute'))
+app.use('/restaurants' , require('./routes/restaurantRoute/menuItemsRoute/menu-items-Route'))
 
-//? delwa2ty 5lsna kol end point fel auth lw7dha w 3mlna controller ll review fadel bokra nzbt kol l files hna w fe postman w nkml b2a sho8l mn mkan ma w2fna 
-//! post man change all end points and tokens 
-//! create order finished and start over it with get all orders and status
-// انقل كل اند بوينت علي حسب الرول بتاع اللي يقدر يوصلها
+
+// User Auth Routes
+app.use('/user' , require('./routes/userRoute/authRoutes/registerRoute'))
+app.use('/user' , require('./routes/userRoute/authRoutes/loginRoute'))
+app.use('/user' , require('./routes/userRoute/authRoutes/userRoute'))
+// User Routes
+app.use('/user/addresses' , require('./routes/userRoute/adressesRoute/addressRoute'))
+app.use('/user/restaurants' , require('./routes/userRoute/restaurantsRoute'))
+//order Route
+// app.use('/orders' , require('./routes/userRoute/orderRoutes/orderRoute'))
+
+
 //seeder for meals 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+//! when order controllers end try to delete a customer user 

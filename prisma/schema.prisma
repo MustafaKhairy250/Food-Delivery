@@ -27,18 +27,33 @@ enum Status {
   CANCELED
 }
 
+enum RestStatus {
+  REVIEWING
+  REVIEWED
+  UPDATING
+  REJECTED
+  UPDATED
+  DELETED
+}
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
   id         Int          @id @default(autoincrement())
   name       String
   email      String       @unique
   password   String
   role       Role
-  phone      String     @unique
+  phone      String
   addresses  Address[]
   orders     Order[]
   restaurant Restaurant[] @relation("RestaurantOwner")
   createdAt  DateTime     @default(now())
   isreviewd Boolean?
+  deleted Boolean   @default(false)
 }
 
 model Address {
@@ -60,8 +75,24 @@ model Restaurant {
   menuItem  MenuItem[]
   orders    Order[]    @relation("RestaurantOrders")
   createdAt DateTime   @default(now())
+  reviewdAt DateTime?
+  deletedAt DateTime?
+  status RestStatus    @default(REVIEWING)
+  updateRequests RestaurantUpdateRequest[]
 }
 
+model RestaurantUpdateRequest {
+  id          Int       @id @default(autoincrement())
+  restaurant  Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId Int
+
+  name        String?   
+  address     String?  
+
+  status      RequestStatus @default(PENDING)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt  
+}
 model MenuItem {
   id           Int         @id @default(autoincrement())
   name         String

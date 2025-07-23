@@ -7,15 +7,24 @@ exports.userLogin = async (req, res) => {
     const { email, password } = req.body
 
     try {
-        const user = await prisma.user.findUnique({
+        const user = await prisma.user.findFirst({
             where: {
-                email: email
-            },
+                email: email,
+                deleted : false
+            },select: {
+                id: true,
+                name: true,
+                email: true,
+                password: true,
+                role : true,
+                phone : true,
+                addresses : true,
+            }
         })
 
         if (!user) {
             return res.status(404).json({
-                message: 'Invalid credentials'
+                message: 'Invalid credentials or your account has been deleted'
             })
         }
 
@@ -29,18 +38,14 @@ exports.userLogin = async (req, res) => {
         const token = jwt.sign({
             id: user.id,
             email: user.email,
-            role: user.role
+            role: user.role,
         }, process.env.ACCESS_TOKEN_SECRET,
         {
             expiresIn: '1h'
         })
-        const userwithoutPassword = {
-            name: user.name,
-            email: user.email,
-            phone: user.phone,
-        }
+        const { password : pass,id : id , role : role, ...userData } = user
         res.status(200).json({
-            userwithoutPassword,
+            user : userData,
             token: token
         })
     } catch (err) {

@@ -9,13 +9,20 @@ exports.adminlogin = async (req, res) => {
     try {
         const user = await prisma.user.findUnique({
             where: {
-                email: email
+                email: email,
+                deleted : false
+            },select: {
+                name: true,
+                email: true,
+                password: true,
+                phone : true,
+                role : true
             }
         })
 
         if (!user) {
             return res.status(404).json({
-                message: 'Invalid credentials'
+                message: 'Invalid credentials or your account has been deleted'
             })
         }
 
@@ -25,7 +32,6 @@ exports.adminlogin = async (req, res) => {
                 message: 'Invalid credentials'
             })
         }
-
         const token = jwt.sign({
             id: user.id,
             email: user.email,
@@ -34,13 +40,9 @@ exports.adminlogin = async (req, res) => {
         {
             expiresIn: '1h'
         })
-
+        const {password : pass, role : role ,...userData} = user
         res.status(200).json({
-            user: {
-                name : user.name,
-                email : user.email,
-                phone : user.phone,
-            },
+            user : userData,
             token: token
         })
     } catch (err) {

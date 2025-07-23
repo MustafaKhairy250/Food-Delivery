@@ -8,13 +8,23 @@ exports.restaurantLogin = async (req, res) => {
     try {
         const user = await prisma.user.findUnique({
             where: {
-                email: email
+                email: email,
+                deleted : false
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                password: true,
+                phone : true,
+                role : true,
+                isreviewd : true
             }
         })
 
         if (!user) {
             return res.status(404).json({
-                message: 'Invalid credentials'
+                message: 'Invalid credentials or your account has been deleted'
             })
         }
 
@@ -25,22 +35,23 @@ exports.restaurantLogin = async (req, res) => {
             })
         }
         if(user.isreviewd === null) return res.json({message : 'Please wait for admin to review your account'})
-        if(user.isreviewd === false) return res.json({message : 'Your account is rejected by admin'})
+        if(user.isreviewd === false) return res.json({message : 'Your account has not been approved'}) // in case we edit reviewcreate controller
         const token = jwt.sign({
             id: user.id,
             email: user.email,
-            role: user.role
+            role: user.role,
+            isreviewd : user.isreviewd
         }, process.env.ACCESS_TOKEN_SECRET,
         {
             expiresIn: '1h'
         })
-        const userWithoutPassword = {
-            name: user.name,
-            email: user.email,
+        const userData = {
+            name : user.name,
+            email : user.email,
             phone : user.phone
         }
         res.status(200).json({
-            userWithoutPassword,
+            user : userData,
             token: token
         })
     } catch (err) {

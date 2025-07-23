@@ -3,7 +3,7 @@ const { body, validationResult } = require('express-validator');
 const menuItemRules = [
   body('name').notEmpty().withMessage('Name is required'),
   body('price').isFloat({ gt: 0 }).withMessage('Price must be a number > 0'),
-  body('description').optional().isString(),
+  body('description').notEmpty().isString(),
 ];
 
 const updateMenuItemRules = [

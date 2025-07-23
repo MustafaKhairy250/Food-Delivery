@@ -35,17 +35,13 @@ try {
                     country : address.country
                 }
             }
-        },
-        include : {
-            addresses : true 
-        },
+        },select : {
+            name : true,
+            email : true,
+            phone : true,
+            addresses : true
+        }
     })
-    const UserWithoutPassword = {
-        name : user.name,
-        email : user.email,
-        phone : user.phone,
-        addresses : user.addresses
-    }
     const token = jwt.sign({
         id: user.id,
         email: user.email,
@@ -56,7 +52,7 @@ try {
     }
 )
     res.status(201).json({
-        UserWithoutPassword,
+        user,
         token: token
     })
 } catch (err) {

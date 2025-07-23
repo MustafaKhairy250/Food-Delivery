@@ -1,5 +1,3 @@
-// const {PrismaClient} = require("@prisma/client");
-// const prisma = new PrismaClient();
 
 const adminRole = async (req , res , next) => {
     const {role} = req.user
@@ -14,8 +12,8 @@ const adminRole = async (req , res , next) => {
 }
 
 const restaurantRole = async (req , res , next) => {
-    const {role} = req.user
-    if(role === 'RESTAURANT'){
+    const {role , isreviewd} = req.user
+    if(role === 'RESTAURANT' && isreviewd === true){
         next()
     }
     else {

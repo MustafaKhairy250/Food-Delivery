@@ -18,14 +18,18 @@ const updateRules = [
     body('name').optional().notEmpty().withMessage('Name cannot be empty'),
     body('email').optional().isEmail().withMessage('Invalid email'),
     body('password').optional().isLength({ min: 6 }).withMessage('Password must be ≥6 chars'),
-    body('phone').optional()
-    .matches(/^01\d{9}$/)
-    .withMessage( 'phone must be 11 digits and start with "01"'),
+    body('phone').optional().matches(/^01\d{9}$/).withMessage( 'phone must be 11 digits and start with "01"'),
+    body('isReviewd').optional().isBoolean().withMessage('isReviewd must be a boolean'),
   ];
+const statusRules = [
+  body('status').exists({ checkFalsy: true }).withMessage('Status is required')
+  .isIn(['PENDING', 'APPROVED', 'REJECTED']).withMessage('Invalid status value')
+
+]
 const runValidation = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
   next();
 };
 
-module.exports = { registerRules, loginRules ,updateRules ,runValidation };
+module.exports = { registerRules, loginRules ,updateRules ,statusRules,runValidation };
