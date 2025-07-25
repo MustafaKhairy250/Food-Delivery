@@ -23,6 +23,8 @@ app.use('/restaurants/deleted' , require('./routes/restaurantRoute/authRoutes/re
 app.use('/restaurants' , require('./routes/restaurantRoute/authRoutes/CRUD_restaurantRoute'))
 //menu-items Route All CRUD Operations
 app.use('/restaurants' , require('./routes/restaurantRoute/menuItemsRoute/menu-items-Route'))
+//order Route
+app.use('/restaurants/orders' , require('./routes/restaurantRoute/orderRoutes/orderRoute'))
 
 
 // User Auth Routes
