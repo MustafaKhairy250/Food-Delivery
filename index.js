@@ -33,8 +33,7 @@ app.use('/user' , require('./routes/userRoute/authRoutes/userRoute'))
 app.use('/user/addresses' , require('./routes/userRoute/adressesRoute/addressRoute'))
 app.use('/user/restaurants' , require('./routes/userRoute/restaurantsRoute'))
 //order Route
-// app.use('/orders' , require('./routes/userRoute/orderRoutes/orderRoute'))
-
+app.use('/user/orders' , require('./routes/userRoute/orderRoutes/orderRoute'))
 
 //seeder for meals 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
