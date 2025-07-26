@@ -74,6 +74,19 @@ exports.getOneRestaurant = async (req, res) => {
 exports.deleteRestaurant = async (req, res) => {
   const { id: restId } = req.params;
   try {
+    const existingOrders = await prisma.order.findMany({
+      where: {
+        restaurantId: Number(restId),
+        status: {
+          notIn: ["DELIVERED", "CANCELED"],
+        },
+      },
+    })
+    if(existingOrders.length > 0) {
+      return res.status(400).json({
+        message: "There are active orders for this restaurant",
+      });
+    }
     await prisma.restaurant.update({
       where: {
         id: Number(restId),

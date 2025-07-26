@@ -129,6 +129,19 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   const { id: userId } = req.params;
   try {
+    const existingOrders = await prisma.order.findMany({
+      where: {
+        userId: Number(userId),
+        status: {
+          notIn : ["DELIVERED", "CANCELED"]
+        }
+      },
+    })
+    if(existingOrders.length > 0) {
+      return res.status(400).json({
+        message: "There are active orders for this user",
+      });
+    }
     await prisma.user.update({
       where: {
         id: Number(userId),
