@@ -13,6 +13,8 @@ app.use('/admin/users' , require('./routes/adminRoutes/authRoutes/usersControlRo
 // Admin Routes controlling restaurants Requests
 app.use('/admin/restaurants' , require('./routes/adminRoutes/restaurantRequestsRoutes/reviewCreateRestRoute'))
 app.use('/admin/restaurants' , require('./routes/adminRoutes/restaurantRequestsRoutes/reviewUpdateRestRoute'))
+// order Route
+app.use('/admin/orders' , require('./routes/adminRoutes/ordersRoutes/orderRoute'))
 
 
 // Restaurant Auth Routes
