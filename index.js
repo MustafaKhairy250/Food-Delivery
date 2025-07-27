@@ -41,4 +41,3 @@ app.use('/user/orders' , require('./routes/userRoute/orderRoutes/orderRoute'))
 
 //seeder for meals 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-//! when order controllers end try to delete a customer user 
